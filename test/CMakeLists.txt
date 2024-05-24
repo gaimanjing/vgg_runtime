@@ -11,6 +11,7 @@ else()
     container/SdkTests.cpp
     container/container_tests.cpp
     controller/controller_test.cpp
+    domain/layout/LayoutBugTests.cpp
     domain/layout/expand_symbol_tests.cpp
     domain/layout/layout_tests.cpp
     domain/layout/lib_layout_tests.cpp
