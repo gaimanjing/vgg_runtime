@@ -56,5 +56,22 @@ TEST_F(LayoutBugTestSuite, NestedHugHeightContainer)
   }
 }
 
+TEST_F(LayoutBugTestSuite, ChangeContainerHugWidthToFixed) // child width is fill
+{
+  // Given
+  setupWithExpanding("testDataDir/layout/bugs/24_0510_02/");
+
+  // When
+  layout(Layout::Size{ 876, 900 });
+
+  // Then
+  {
+    auto node =
+      m_sut->layoutTree()->findDescendantNodeById("1:204"); // "name": "Home Screen Quick Actions"
+    Layout::Rect expectedFrame = { { 31, 196 }, { 250, 264 } };
+    EXPECT_EQ(node->frame(), expectedFrame);
+  }
+}
+
 } // namespace
 } // namespace VGG
