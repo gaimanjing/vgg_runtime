@@ -128,7 +128,7 @@ Bounds RasterNode::onRevalidate()
   // TODO:: This object does not have to be ZoomerNode-awared, it can be achieved by carefully
   // judging from coressponding component of matrix in TransformNode.  In other words, it should
   // be able to handle any sort of transformation node.
-  if (m_raster)
+  if (false && m_raster)
   {
     if (m_cacheUniqueID != c->picture()->uniqueID())
     {

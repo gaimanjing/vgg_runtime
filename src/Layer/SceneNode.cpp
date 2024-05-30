@@ -198,6 +198,7 @@ glm::mat3 SceneNode::getMatrix() const
 
 SkPicture* SceneNode::picture() const
 {
+  return nullptr;
   return d_ptr->picture.get();
 }
 
