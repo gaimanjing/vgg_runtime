@@ -16,6 +16,7 @@
 
 #include "Adapter/Environment.hpp"
 #include "Application/Presenter.hpp"
+#include "Domain/Model/DesignModel.hpp"
 #include "Entry/Container/Container.hpp"
 
 #include "test_config.hpp"
@@ -265,4 +266,31 @@ TEST_F(ContainerTestSuite, SdkElementApis)
     EXPECT_EQ(j["content"], "100");
     EXPECT_EQ(j["name"], countId); // The original field should not be changed
   }
+}
+
+TEST_F(ContainerTestSuite, TextLayout)
+{
+  // Given
+  std::unique_ptr<layer::SkiaGraphicsContext> graphicsContext{ new MockSkiaGraphicsContext };
+  m_sut->setGraphicsContext(graphicsContext, 876, 800);
+
+  std::string filePath = "testDataDir/layout/features/textLayout";
+  auto        result = m_sut->load(filePath);
+  EXPECT_TRUE(result);
+
+  // When
+  {
+    auto ret = m_sut->paint();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100)); // makeFrame
+    ret = m_sut->paint();
+    EXPECT_TRUE(ret);
+  }
+
+  // Then
+  auto              sdk = m_sut->sdk();
+  const auto        element = sdk->getElement("7:44750"); // d32, text
+  const Model::Text text = nlohmann::json::parse(element);
+  const auto&       bounds = text.bounds;
+  EXPECT_DOUBLE_EQ(636.0, bounds.width);
+  EXPECT_DOUBLE_EQ(144.0, bounds.height);
 }
