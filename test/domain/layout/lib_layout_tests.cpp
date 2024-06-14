@@ -1,9 +1,29 @@
+#include <memory>
 #include <flexbox_node.h>
 #include <grid_layout.h>
-
-#include <memory>
-
 #include <gtest/gtest.h>
+#include "Utility/Log.hpp"
+namespace
+{
+
+void dumpFlexNodeTreeSize(flexbox_node* n)
+{
+  DEBUG("{");
+  DEBUG("auto width = %f;", n->get_layout_width());
+  DEBUG("auto height = %f;", n->get_layout_height());
+
+  if (n->child_count() > 0)
+  {
+    DEBUG("{");
+    for (uint32_t i = 0; i < n->child_count(); ++i)
+    {
+      dumpFlexNodeTreeSize(n->get_child(i));
+    }
+    DEBUG("}");
+  }
+
+  DEBUG("}");
+}
 
 TEST(LibLayoutTest, GrowShrinkWithWidth)
 {
@@ -342,3 +362,425 @@ TEST(LibLayoutTest, VerticalFlexAlignItemCenterContainerWithFillWidthItem)
 
   EXPECT_DOUBLE_EQ(130.0, pChild->get_layout_left());
 }
+
+TEST(LibLayoutTest, PresentStateLayout)
+{
+  {
+    auto n = std::make_unique<flexbox_node>(); // d0, row
+    n->set_direction((direction)0);
+    n->set_justify_content((justify_content)0);
+    n->set_align_items((align_items)0);
+    n->set_align_self((align_items)4);
+    n->set_align_content((align_content)0);
+    n->set_wrap((wrap)1);
+    n->set_gap(gap_row, 0.000000);
+    n->set_gap(gap_column, 26.000000);
+    n->set_padding(padding_left, 0.000000);
+    n->set_padding(padding_top, 0.000000);
+    n->set_padding(padding_right, 0.000000);
+    n->set_padding(padding_bottom, 0.000000);
+    n->set_margin(padding_left, (unit)3, {});
+    n->set_margin(padding_top, (unit)3, {});
+    n->set_margin(padding_right, (unit)3, {});
+    n->set_margin(padding_bottom, (unit)3, {});
+    n->set_position((position)1);
+    n->set_grow(0.000000);
+    n->set_shrink(0.000000);
+    n->set_overflow((overflow)0);
+    n->set_width((unit)0, 1920.000000);
+    n->set_min_width((unit)3, {});
+    n->set_max_width((unit)3, {});
+    n->set_height((unit)2, {});
+    n->set_min_height((unit)3, {});
+    n->set_max_height((unit)3, {});
+    {
+      auto& p = n;
+      {
+        auto n = std::make_unique<flexbox_node>(); // d1, Card
+        n->set_direction((direction)1);
+        n->set_justify_content((justify_content)0);
+        n->set_align_items((align_items)0);
+        n->set_align_self((align_items)4);
+        n->set_align_content((align_content)0);
+        n->set_wrap((wrap)1);
+        n->set_gap(gap_row, 4.000000);
+        n->set_gap(gap_column, 0.000000);
+        n->set_padding(padding_left, 0.000000);
+        n->set_padding(padding_top, 0.000000);
+        n->set_padding(padding_right, 0.000000);
+        n->set_padding(padding_bottom, 0.000000);
+        n->set_margin(padding_left, (unit)3, {});
+        n->set_margin(padding_top, (unit)3, {});
+        n->set_margin(padding_right, (unit)3, {});
+        n->set_margin(padding_bottom, (unit)3, {});
+        n->set_position((position)1);
+        n->set_grow(1.000000);
+        n->set_shrink(1.000000);
+        n->set_overflow((overflow)0);
+        n->set_width((unit)2, {});
+        n->set_min_width((unit)3, {});
+        n->set_max_width((unit)3, {});
+        n->set_height((unit)2, {});
+        n->set_min_height((unit)3, {});
+        n->set_max_height((unit)3, {});
+        {
+          auto& p = n;
+          {
+            auto n = std::make_unique<flexbox_node>(); // d14, Img
+            n->set_direction((direction)1);
+            n->set_justify_content((justify_content)1);
+            n->set_align_items((align_items)1);
+            n->set_align_self((align_items)4);
+            n->set_align_content((align_content)0);
+            n->set_wrap((wrap)1);
+            n->set_gap(gap_row, 8.000000);
+            n->set_gap(gap_column, 0.000000);
+            n->set_padding(padding_left, 32.000000);
+            n->set_padding(padding_top, 32.000000);
+            n->set_padding(padding_right, 32.000000);
+            n->set_padding(padding_bottom, 32.000000);
+            n->set_margin(padding_left, (unit)3, {});
+            n->set_margin(padding_top, (unit)3, {});
+            n->set_margin(padding_right, (unit)3, {});
+            n->set_margin(padding_bottom, (unit)3, {});
+            n->set_position((position)1);
+            n->set_grow(0.000000);
+            n->set_shrink(0.000000);
+            n->set_overflow((overflow)0);
+            n->set_width((unit)1, 100.000000);
+            n->set_min_width((unit)3, {});
+            n->set_max_width((unit)3, {});
+            n->set_height((unit)2, {});
+            n->set_min_height((unit)3, {});
+            n->set_max_height((unit)3, {});
+            {
+              auto& p = n;
+              {
+                auto n = std::make_unique<flexbox_node>(); // d13, Img
+                n->set_direction((direction)1);
+                n->set_justify_content((justify_content)1);
+                n->set_align_items((align_items)1);
+                n->set_align_self((align_items)4);
+                n->set_align_content((align_content)0);
+                n->set_wrap((wrap)1);
+                n->set_gap(gap_row, 0.000000);
+                n->set_gap(gap_column, 0.000000);
+                n->set_padding(padding_left, 0.000000);
+                n->set_padding(padding_top, 0.000000);
+                n->set_padding(padding_right, 0.000000);
+                n->set_padding(padding_bottom, 0.000000);
+                n->set_margin(padding_left, (unit)3, {});
+                n->set_margin(padding_top, (unit)3, {});
+                n->set_margin(padding_right, (unit)3, {});
+                n->set_margin(padding_bottom, (unit)3, {});
+                n->set_position((position)1);
+                n->set_grow(0.000000);
+                n->set_shrink(0.000000);
+                n->set_overflow((overflow)0);
+                n->set_width((unit)1, 100.000000);
+                n->set_min_width((unit)3, {});
+                n->set_max_width((unit)3, {});
+                n->set_height((unit)2, {});
+                n->set_min_height((unit)3, {});
+                n->set_max_height((unit)3, {});
+                {
+                  auto& p = n;
+                  {
+                    auto n = std::make_unique<flexbox_node>(); // 调宽度请调整我的间距
+                    n->set_direction((direction)0);
+                    n->set_justify_content((justify_content)0);
+                    n->set_align_items((align_items)1);
+                    n->set_align_self((align_items)4);
+                    n->set_align_content((align_content)0);
+                    n->set_wrap((wrap)1);
+                    n->set_gap(gap_row, 0.000000);
+                    n->set_gap(gap_column, 289.000000);
+                    n->set_padding(padding_left, 0.000000);
+                    n->set_padding(padding_top, 0.000000);
+                    n->set_padding(padding_right, 0.000000);
+                    n->set_padding(padding_bottom, 0.000000);
+                    n->set_margin(padding_left, (unit)3, {});
+                    n->set_margin(padding_top, (unit)3, {});
+                    n->set_margin(padding_right, (unit)3, {});
+                    n->set_margin(padding_bottom, (unit)3, {});
+                    n->set_position((position)1);
+                    n->set_grow(0.000000);
+                    n->set_shrink(0.000000);
+                    n->set_overflow((overflow)0);
+                    n->set_width((unit)1, 100.000000);
+                    n->set_min_width((unit)3, {});
+                    n->set_max_width((unit)3, {});
+                    n->set_height((unit)2, {});
+                    n->set_min_height((unit)3, {});
+                    n->set_max_height((unit)3, {});
+                    {
+                      auto& p = n;
+                      {
+                        auto n = std::make_unique<flexbox_node>();
+                        n->set_direction((direction)1);
+                        n->set_justify_content((justify_content)0);
+                        n->set_align_items((align_items)3);
+                        n->set_align_self((align_items)4);
+                        n->set_align_content((align_content)0);
+                        n->set_wrap((wrap)1);
+                        n->set_margin(padding_left, (unit)3, {});
+                        n->set_margin(padding_top, (unit)3, {});
+                        n->set_margin(padding_right, (unit)3, {});
+                        n->set_margin(padding_bottom, (unit)3, {});
+                        n->set_position((position)1);
+                        n->set_grow(0.000000);
+                        n->set_shrink(0.000000);
+                        n->set_overflow((overflow)0);
+                        n->set_width((unit)0, 0.000010);
+                        n->set_min_width((unit)3, {});
+                        n->set_max_width((unit)3, {});
+                        n->set_height((unit)0, 0.000000);
+                        n->set_min_height((unit)3, {});
+                        n->set_max_height((unit)3, {});
+                        p->add_child(n);
+                      }
+                      {
+                        auto n = std::make_unique<flexbox_node>();
+                        n->set_direction((direction)1);
+                        n->set_justify_content((justify_content)0);
+                        n->set_align_items((align_items)3);
+                        n->set_align_self((align_items)4);
+                        n->set_align_content((align_content)0);
+                        n->set_wrap((wrap)1);
+                        n->set_margin(padding_left, (unit)3, {});
+                        n->set_margin(padding_top, (unit)3, {});
+                        n->set_margin(padding_right, (unit)3, {});
+                        n->set_margin(padding_bottom, (unit)3, {});
+                        n->set_position((position)1);
+                        n->set_grow(0.000000);
+                        n->set_shrink(0.000000);
+                        n->set_overflow((overflow)0);
+                        n->set_width((unit)0, 0.000010);
+                        n->set_min_width((unit)3, {});
+                        n->set_max_width((unit)3, {});
+                        n->set_height((unit)0, 0.000000);
+                        n->set_min_height((unit)3, {});
+                        n->set_max_height((unit)3, {});
+                        p->add_child(n);
+                      }
+                    }
+                    p->add_child(n);
+                  }
+                  {
+                    auto n = std::make_unique<flexbox_node>(); // d12, 展开我
+                    n->set_direction((direction)0);
+                    n->set_justify_content((justify_content)1);
+                    n->set_align_items((align_items)1);
+                    n->set_align_self((align_items)4);
+                    n->set_align_content((align_content)0);
+                    n->set_wrap((wrap)1);
+                    n->set_gap(gap_row, 0.000000);
+                    n->set_gap(gap_column, 0.000000);
+                    n->set_padding(padding_left, 0.000000);
+                    n->set_padding(padding_top, 0.000000);
+                    n->set_padding(padding_right, 0.000000);
+                    n->set_padding(padding_bottom, 0.000000);
+                    n->set_margin(padding_left, (unit)3, {});
+                    n->set_margin(padding_top, (unit)3, {});
+                    n->set_margin(padding_right, (unit)3, {});
+                    n->set_margin(padding_bottom, (unit)3, {});
+                    n->set_position((position)1);
+                    n->set_grow(0.000000);
+                    n->set_shrink(0.000000);
+                    n->set_overflow((overflow)0);
+                    n->set_width((unit)1, 100.000000);
+                    n->set_min_width((unit)3, {});
+                    n->set_max_width((unit)3, {});
+                    n->set_height((unit)2, {});
+                    n->set_min_height((unit)3, {});
+                    n->set_max_height((unit)3, {});
+                    {
+                      auto& p = n;
+                      {
+                        auto n = std::make_unique<flexbox_node>(); // d11, image 1
+                        n->set_direction((direction)1);
+                        n->set_justify_content((justify_content)0);
+                        n->set_align_items((align_items)3);
+                        n->set_align_self((align_items)3);
+                        n->set_align_content((align_content)0);
+                        n->set_wrap((wrap)1);
+                        n->set_margin(padding_left, (unit)3, {});
+                        n->set_margin(padding_top, (unit)3, {});
+                        n->set_margin(padding_right, (unit)3, {});
+                        n->set_margin(padding_bottom, (unit)3, {});
+                        n->set_position((position)1);
+                        n->set_grow(1.000000);
+                        n->set_shrink(1.000000);
+                        n->set_overflow((overflow)0);
+                        n->set_width((unit)2, {});
+                        n->set_min_width((unit)3, {});
+                        n->set_max_width((unit)3, {});
+                        n->set_height((unit)1, 100.000000);
+                        n->set_min_height((unit)3, {});
+                        n->set_max_height((unit)3, {});
+                        p->add_child(n);
+                      }
+                      {
+                        auto n = std::make_unique<flexbox_node>();
+                        n->set_direction((direction)1);
+                        n->set_justify_content((justify_content)1);
+                        n->set_align_items((align_items)0);
+                        n->set_align_self((align_items)4);
+                        n->set_align_content((align_content)0);
+                        n->set_wrap((wrap)1);
+                        n->set_gap(gap_row, 216.750000);
+                        n->set_gap(gap_column, 0.000000);
+                        n->set_padding(padding_left, 0.000000);
+                        n->set_padding(padding_top, 0.000000);
+                        n->set_padding(padding_right, 0.000000);
+                        n->set_padding(padding_bottom, 0.000000);
+                        n->set_margin(padding_left, (unit)3, {});
+                        n->set_margin(padding_top, (unit)3, {});
+                        n->set_margin(padding_right, (unit)3, {});
+                        n->set_margin(padding_bottom, (unit)3, {});
+                        n->set_position((position)1);
+                        n->set_grow(0.000000);
+                        n->set_shrink(0.000000);
+                        n->set_overflow((overflow)0);
+                        n->set_width((unit)2, {});
+                        n->set_min_width((unit)3, {});
+                        n->set_max_width((unit)3, {});
+                        n->set_height((unit)2, {});
+                        n->set_min_height((unit)3, {});
+                        n->set_max_height((unit)3, {});
+                        {
+                          auto& p = n;
+                          {
+                            auto n = std::make_unique<flexbox_node>();
+                            n->set_direction((direction)1);
+                            n->set_justify_content((justify_content)0);
+                            n->set_align_items((align_items)3);
+                            n->set_align_self((align_items)4);
+                            n->set_align_content((align_content)0);
+                            n->set_wrap((wrap)1);
+                            n->set_margin(padding_left, (unit)3, {});
+                            n->set_margin(padding_top, (unit)3, {});
+                            n->set_margin(padding_right, (unit)3, {});
+                            n->set_margin(padding_bottom, (unit)3, {});
+                            n->set_position((position)1);
+                            n->set_grow(0.000000);
+                            n->set_shrink(0.000000);
+                            n->set_overflow((overflow)0);
+                            n->set_width((unit)0, 0.000010);
+                            n->set_min_width((unit)3, {});
+                            n->set_max_width((unit)3, {});
+                            n->set_height((unit)0, 0.000000);
+                            n->set_min_height((unit)3, {});
+                            n->set_max_height((unit)3, {});
+                            p->add_child(n);
+                          }
+                          {
+                            auto n = std::make_unique<flexbox_node>();
+                            n->set_direction((direction)1);
+                            n->set_justify_content((justify_content)0);
+                            n->set_align_items((align_items)3);
+                            n->set_align_self((align_items)4);
+                            n->set_align_content((align_content)0);
+                            n->set_wrap((wrap)1);
+                            n->set_margin(padding_left, (unit)3, {});
+                            n->set_margin(padding_top, (unit)3, {});
+                            n->set_margin(padding_right, (unit)3, {});
+                            n->set_margin(padding_bottom, (unit)3, {});
+                            n->set_position((position)1);
+                            n->set_grow(0.000000);
+                            n->set_shrink(0.000000);
+                            n->set_overflow((overflow)0);
+                            n->set_width((unit)0, 0.000010);
+                            n->set_min_width((unit)3, {});
+                            n->set_max_width((unit)3, {});
+                            n->set_height((unit)0, 0.000000);
+                            n->set_min_height((unit)3, {});
+                            n->set_max_height((unit)3, {});
+                            p->add_child(n);
+                          }
+                        }
+                        p->add_child(n);
+                      }
+                    }
+                    p->add_child(n);
+                  }
+                }
+                p->add_child(n);
+              }
+            }
+            p->add_child(n);
+          }
+        }
+        p->add_child(n);
+      }
+    }
+
+    n->calc_layout();
+    dumpFlexNodeTreeSize(n.get());
+
+    {
+      auto width = 1920.000000;
+      auto height = 281.000000;
+      {
+        {
+          auto width = 1920.000000;
+          auto height = 281.000000;
+          {
+            {
+              auto width = 1920.000000;
+              auto height = 281.000000;
+              {
+                {
+                  auto width = 1856.000000;
+                  auto height = 217.000000;
+                  {
+                    {
+                      auto width = 1856.000000;
+                      auto height = 0.000000;
+                      {
+                        {
+                          auto width = 0.000000;
+                          auto height = 0.000000;
+                        }
+                        {
+                          auto width = 0.000000;
+                          auto height = 0.000000;
+                        }
+                      }
+                    }
+                    {
+                      auto width = 1856.000000;
+                      auto height = 217.000000;
+                      {
+                        {
+                          auto width = 1856.000000;
+                          auto height = 217.000000;
+                        }
+                        {
+                          auto width = 0.000000;
+                          auto height = 217.000000;
+                          {
+                            {
+                              auto width = 0.000000;
+                              auto height = 0.000000;
+                            }
+                            {
+                              auto width = 0.000000;
+                              auto height = 0.000000;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+} // namespace

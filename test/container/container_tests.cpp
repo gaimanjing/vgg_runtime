@@ -294,3 +294,37 @@ TEST_F(ContainerTestSuite, TextLayout)
   EXPECT_DOUBLE_EQ(636.0, bounds.width);
   EXPECT_DOUBLE_EQ(144.0, bounds.height);
 }
+
+TEST_F(ContainerTestSuite, PresentStateLayout)
+{
+  // Given
+  std::unique_ptr<layer::SkiaGraphicsContext> graphicsContext{ new MockSkiaGraphicsContext };
+  m_sut->setGraphicsContext(graphicsContext, 1920, 800);
+
+  // When
+  std::string filePath = "testDataDir/layout/bugs/24_0607_05/";
+  auto        result = m_sut->load(filePath);
+  EXPECT_TRUE(result);
+
+  // Then
+  auto sdk = m_sut->sdk();
+  {
+    const auto        element = sdk->getElement("1:124__1:59"); // "name": "d11, image 1"
+    const Model::Path node = nlohmann::json::parse(element);
+    const auto&       bounds = node.bounds;
+    EXPECT_DOUBLE_EQ(1856, bounds.width);
+    EXPECT_DOUBLE_EQ(217, bounds.height);
+  }
+
+  {
+    // When
+    sdk->presentState("1:124", "1:124", "1:69", {});
+
+    // Then
+    const auto        element = sdk->getElement("1:124__1:76"); // hover: "name": "image 1"
+    const Model::Path node = nlohmann::json::parse(element);
+    const auto&       bounds = node.bounds;
+    EXPECT_DOUBLE_EQ(1856, bounds.width);
+    EXPECT_DOUBLE_EQ(217, bounds.height);
+  }
+}

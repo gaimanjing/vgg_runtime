@@ -73,5 +73,22 @@ TEST_F(LayoutBugTestSuite, ChangeContainerHugWidthToFixed) // child width is fil
   }
 }
 
+TEST_F(LayoutBugTestSuite, PresentState)
+{
+  // Given
+  setupWithExpanding("testDataDir/layout/bugs/24_0607_05/");
+
+  // When
+  layout(Layout::Size{ 1920, 900 });
+
+  // Then
+  {
+    auto node =
+      m_sut->layoutTree()->findDescendantNodeById("1:124__1:59"); // "name": "d11, image 1"
+    Layout::Rect expectedFrame = { { 0, 0 }, { 1856, 217 } };
+    EXPECT_EQ(node->frame(), expectedFrame);
+  }
+}
+
 } // namespace
 } // namespace VGG

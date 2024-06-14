@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "AutoLayout.hpp"
+#include <cmath>
 #include <stdint.h>
 #include <memory>
 #include <utility>
@@ -220,6 +221,115 @@ length_unit toLibLengthUnit(Length::ETypes type)
     default:
       return length_unit_point;
   }
+}
+
+void dumpFlexNodeTree(flexbox_node* n)
+{
+  ASSERT(n);
+
+  // dump self
+  DEBUG("{");
+
+  DEBUG("auto n = std::make_unique<flexbox_node>();");
+
+  DEBUG("n->set_direction((direction)%d);", n->get_direction());
+  DEBUG("n->set_justify_content((justify_content)%d);", n->get_justify_content());
+  DEBUG("n->set_align_items((align_items)%d);", n->get_align_items());
+  DEBUG("n->set_align_self((align_items)%d);", n->get_align_self());
+  DEBUG("n->set_align_content((align_content)%d);", n->get_align_content());
+  DEBUG("n->set_wrap((wrap)%d);", n->get_wrap());
+  if (!std::isnan(n->get_gap(gap_row)))
+    DEBUG("n->set_gap(gap_row, %f);", n->get_gap(gap_row));
+  if (!std::isnan(n->get_gap(gap_column)))
+    DEBUG("n->set_gap(gap_column, %f);", n->get_gap(gap_column));
+  if (!std::isnan(n->get_padding(padding_left)))
+    DEBUG("n->set_padding(padding_left, %f);", n->get_padding(padding_left));
+  if (!std::isnan(n->get_padding(padding_top)))
+    DEBUG("n->set_padding(padding_top, %f);", n->get_padding(padding_top));
+  if (!std::isnan(n->get_padding(padding_right)))
+    DEBUG("n->set_padding(padding_right, %f);", n->get_padding(padding_right));
+  if (!std::isnan(n->get_padding(padding_bottom)))
+    DEBUG("n->set_padding(padding_bottom, %f);", n->get_padding(padding_bottom));
+
+  auto [u, v] = n->get_margin(padding_left);
+  if (v)
+    DEBUG("n->set_margin(padding_left, (unit)%d, %f);", u, *v);
+  else
+    DEBUG("n->set_margin(padding_left, (unit)%d, {});", u);
+  std::tie(u, v) = n->get_margin(padding_top);
+  if (v)
+    DEBUG("n->set_margin(padding_top, (unit)%d, %f);", u, *v);
+  else
+    DEBUG("n->set_margin(padding_top, (unit)%d, {});", u);
+  std::tie(u, v) = n->get_margin(padding_right);
+  if (v)
+    DEBUG("n->set_margin(padding_right, (unit)%d, %f);", u, *v);
+  else
+    DEBUG("n->set_margin(padding_right, (unit)%d, {});", u);
+  std::tie(u, v) = n->get_margin(padding_bottom);
+  if (v)
+    DEBUG("n->set_margin(padding_bottom, (unit)%d, %f);", u, *v);
+  else
+    DEBUG("n->set_margin(padding_bottom, (unit)%d, {});", u);
+
+  DEBUG("n->set_position((position)%d);", n->get_position());
+  if (!std::isnan(n->get_ltrb(ltrb_left)))
+    DEBUG("n->set_ltrb(ltrb_left, %f);", n->get_ltrb(ltrb_left));
+  if (!std::isnan(n->get_ltrb(ltrb_top)))
+    DEBUG("n->set_ltrb(ltrb_top, %f);", n->get_ltrb(ltrb_top));
+  if (!std::isnan(n->get_ltrb(ltrb_right)))
+    DEBUG("n->set_ltrb(ltrb_right, %f);", n->get_ltrb(ltrb_right));
+  if (!std::isnan(n->get_ltrb(ltrb_bottom)))
+    DEBUG("n->set_ltrb(ltrb_bottom, %f);", n->get_ltrb(ltrb_bottom));
+  DEBUG("n->set_grow(%f);", n->get_grow());
+  DEBUG("n->set_shrink(%f);", n->get_shrink());
+  DEBUG("n->set_overflow((overflow)%d);", n->get_overflow());
+
+  std::tie(u, v) = n->get_width();
+  if (v)
+    DEBUG("n->set_width((unit)%d, %f);", u, *v);
+  else
+    DEBUG("n->set_width((unit)%d, {});", u);
+  std::tie(u, v) = n->get_min_width();
+  if (v)
+    DEBUG("n->set_min_width((unit)%d, %f);", u, *v);
+  else
+    DEBUG("n->set_min_width((unit)%d, {});", u);
+  std::tie(u, v) = n->get_max_width();
+  if (v)
+    DEBUG("n->set_max_width((unit)%d, %f);", u, *v);
+  else
+    DEBUG("n->set_max_width((unit)%d, {});", u);
+  std::tie(u, v) = n->get_height();
+  if (v)
+    DEBUG("n->set_height((unit)%d, %f);", u, *v);
+  else
+    DEBUG("n->set_height((unit)%d, {});", u);
+  std::tie(u, v) = n->get_min_height();
+  if (v)
+    DEBUG("n->set_min_height((unit)%d, %f);", u, *v);
+  else
+    DEBUG("n->set_min_height((unit)%d, {});", u);
+  std::tie(u, v) = n->get_max_height();
+  if (v)
+    DEBUG("n->set_max_height((unit)%d, %f);", u, *v);
+  else
+    DEBUG("n->set_max_height((unit)%d, {});", u);
+
+  // dump children
+  if (n->child_count() > 0)
+  {
+    DEBUG("{");
+    DEBUG("auto& p = n;");
+    for (uint32_t i = 0; i < n->child_count(); ++i)
+    {
+      dumpFlexNodeTree(n->get_child(i));
+    }
+    DEBUG("}");
+  }
+
+  DEBUG("p->add_child(n);");
+  DEBUG("}");
 }
 
 } // namespace
@@ -507,6 +617,7 @@ Size AutoLayout::calculateLayout(Size size)
 
   if (auto flexNode = getFlexNode())
   {
+    dumpFlexNodeTree(flexNode);
     flexNode->calc_layout();
     return sharedView->swapWidthAndHeightIfNeeded(
       { flexNode->get_layout_width(), flexNode->get_layout_height() });
